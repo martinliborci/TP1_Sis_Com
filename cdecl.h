@@ -10,7 +10,7 @@
  *
  * return_type PRE_CDECL func_name( args ) POST_CDECL;
  *
- * For example:
+ * For example: 
  *
  * int PRE_CDECL f( int x, int y) POST_CDECL;
  */
