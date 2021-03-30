@@ -11,18 +11,14 @@
 ; ebp +  8      n
 ; ebp +  4      dir retorno
 ; ebp           ebp
-; ebp -  4      resp
 
 segment .text
         global  resta
-;
-; variable local:
-;   res (en [ebp-4])
-resta:
-        enter   4,0                     ;alocar espacio en el stack para la variable local
-        push    ebx               
 
-        mov     dword [ebp - 4],0       ;res = 0
+resta:
+        enter   0,0                     
+        push    ebx                     ; guarda valor de ebx porque se va a utilizar
+
 
         mov     eax, [ebp + 8]          ;eax = 1° operando
         sub     eax, [ebp + 12]         ;eax = eax - 2° operando   
@@ -30,6 +26,6 @@ resta:
         mov     ebx, [ebp + 16]         ;ebx = direccion resp
         mov     [ebx], eax              ;res = eax
 
-        pop     ebx                     ;restore ebx
+        pop     ebx                     ;restaura ebx
         leave
         ret
