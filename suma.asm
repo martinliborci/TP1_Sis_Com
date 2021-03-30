@@ -11,18 +11,14 @@
 ; ebp +  8      n
 ; ebp +  4      dir retorno
 ; ebp           ebp
-; ebp -  4      sum
 
 segment .text
         global  suma
-;
-; variable local:
-;   sum (en [ebp-4])
+
 suma:
-        enter   4,0                     ; alocar espacio en el stack para la variable local
+        enter   0,0                     ; guarda valor de ebx porque se va a utilizar
         push    ebx               
 
-        mov     dword [ebp - 4],0       ; sum = 0
 
         mov     eax, [ebp + 8]          ;eax = 1° operando (n)
         add     eax, [ebp + 12]         ;eax = eax + 2° operando (m)
@@ -30,6 +26,6 @@ suma:
         mov     ebx, [ebp + 16]         ;ebx = dirección sump
         mov     [ebx], eax              ;sump = eax
 
-        pop     ebx                     ; restore ebx
+        pop     ebx                     ; restaura ebx
         leave
         ret
