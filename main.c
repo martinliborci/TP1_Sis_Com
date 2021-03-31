@@ -91,7 +91,7 @@ int sumar_binarios()
 		m = binarioADecimalASM(entrada2, strlen(entrada2));
 		suma(n, m, &result);
 
-		decimalABinario(result, salida, DOBLE_WORD+1);
+		decimalABinarioASM(result, salida, DOBLE_WORD+1);
 
 		printf("El resultado de la suma es %s\n", salida);
 		return 0;
