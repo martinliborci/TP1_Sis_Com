@@ -114,15 +114,14 @@ int restar_binarios()
 		m = binarioADecimalASM(entrada2, strlen(entrada2));
 		resta(n, m, &result);
 
-		decimalABinario(result, salida, DOBLE_WORD+1);
+		decimalABinarioASM(result, salida, DOBLE_WORD+1);
 
 		printf("El resultado de la resta es %s\n", salida);
 		
 		return 0;
 	}
-
-
-/*int binarioADecimal(char *binario, unsigned int longitud)
+/*
+int binarioADecimal(char *binario, unsigned int longitud)
 	{
 		int decimal = 0;
 		int i;
@@ -132,26 +131,32 @@ int restar_binarios()
 
 		return decimal;
 	}
-*/
+
 
 char * decimalABinario(int decimal, char *binario, unsigned int longitud)
 	{
-		int i,j;
+		unsigned int i;
+		char *pbinario;
 
-		for(i=DOBLE_WORD-1; !(decimal & 1<<i) ;i--)
-			if(i==0){
-				binario[0] = '0';
-				binario[1] = '\0';
-				return binario;
-			}
+		// Si es 0
+		if(!decimal){
+			binario[0] = '0';
+			binario[1] = '\0';
+			return binario;
+		}
 
+		// Saltar los 0s hasta encontrar el 1er 1
+		for(i=0x8000; !(decimal & i); i >>= 1)
+				;
 
-		for (i=i,j=0 ; i >=0 ; i--,j++)
-			if(decimal & 1<<i)
-				binario[j] = '1';
+		// 
+		for(pbinario = binario  ; i > 0 ;  i >>= 1, pbinario++)
+			if(decimal & i)
+				*pbinario = '1';
 			else
-				binario[j] = '0';
-		binario[j] = '\0';
+				*pbinario = '0';
+		*pbinario = '\0';
 
 		return binario;
 	}
+*/
