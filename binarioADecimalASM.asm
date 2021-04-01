@@ -1,3 +1,5 @@
+;Prueba de git pull
+
 ; int binarioADecimalASM(char *binario, unsigned int longitud) 
 ; convierte una cadena de caracteres de 1 y 0 a una variable entera
 ; Parametros:
