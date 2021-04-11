@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #include "cdecl.h"
 
@@ -22,7 +23,7 @@ int restar_binarios();
 
 void imprimirExplicacionComando();
 int esBinario(char * binario);
-int esDecimal(char * decimal);;
+int esDecimal(char * decimal);
 
 #define ARGC (int)5
 /*
@@ -40,23 +41,52 @@ int main( int argc, char *argv[] )
 		if (argc != 5){
 			printf("%d no es un número de argumentos inválido.\n", argc);
 			imprimirExplicacionComando();
-		}
-
-		if( strcmp(argv[1],"b") && strcmp(argv[1],"d")){
-			printf("%s no es una opción válida\n", argv[1]);
-			imprimirExplicacionComando();
-		}
-
-		if( strcmp(argv[3],"+") && strcmp(argv[3],"-")){
+			return -1;
+		} else if( strcmp(argv[3],"+") && strcmp(argv[3],"-")){
 			printf("%s no es una operación válida\n", argv[3]);
 			imprimirExplicacionComando();
+			return -1;
+		} else if( strcmp(argv[1],"b") && strcmp(argv[1],"d")){
+			printf("%s no es una opción válida\n", argv[1]);
+			imprimirExplicacionComando();
+			return -1;
+		} else if (!strcmp(argv[1],"b")){							// Entrada binaria
+			if( esBinario(argv[2]) ){
+				printf ("%s no es un operando binario\n", argv[2]);
+				imprimirExplicacionComando();
+				return -1;	
+			} else if( esBinario(argv[4]) ){
+				printf ("%s no es un operando binario\n", argv[4]);
+				imprimirExplicacionComando();
+				return -1;	
+			} else if (strlen(argv[2]) > 32){
+				printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[2]);
+				imprimirExplicacionComando();
+				return -1;
+			} else if (strlen(argv[4]) > 32){
+				printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[4]);
+				imprimirExplicacionComando();
+				return -1;
+			}
+		}else if (!strcmp(argv[1],"d")){							// Entrada decimal
+			if( esDecimal(argv[2]) ){
+				printf ("%s no es un operando decimal\n", argv[2]);
+				imprimirExplicacionComando();	
+				return -1;
+			} else if( esDecimal(argv[4]) ){
+				printf ("%s no es un operando decimal\n", argv[4]);
+				imprimirExplicacionComando();
+				return -1;
+			} else if (strtoll(argv[2], '\0', 10) > 4294967295){
+				printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[2]);
+				imprimirExplicacionComando();
+				return -1;
+			} else if (strtoll(argv[4], '\0', 10) > 4294967295){
+				printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[4]);
+				imprimirExplicacionComando();
+				return -1;
+			}
 		}
-
-		if( esDecimal(argv[2]) ){
-			printf ("%s no es un operando decimal\n", argv[2]);
-			imprimirExplicacionComando();	
-		}
-
 /*
 		while(1)
 		{
@@ -89,6 +119,8 @@ void imprimirExplicacionComando()
 	printf("Formato del comando: b/d op1 +/- op2\n");
 	printf("Donde:\n");
 	printf("\tb/d: indica si los operandos op1 y op2 se encuentran en binario (b) o en decimal (d)\n");
+	printf("\t     La longitud máxima permitida de los operandos binarios es de 32 dígitos\n");
+	printf("\t     El valor máximo permitido de los operandos decimales es 4.294.967.295\n");
 	printf("\t+/-: indica la operación a realizar: suma (+) o resta (-)\n");
 }
 
@@ -102,13 +134,9 @@ int esBinario(char * binario)
 
 int esDecimal(char * decimal)
 {
-	for(char *pbin = decimal; *pbin != '\0'; pbin++){
-		printf(" %c ", *pbin);
-		if(!isdigit(*pbin)){
-			printf("%c no es un dígito", *pbin);
+	for(char *pbin = decimal; *pbin != '\0'; pbin++)
+		if(!isdigit(*pbin))
 			return 1;
-		}
-	}
 	return 0;
 }
 
