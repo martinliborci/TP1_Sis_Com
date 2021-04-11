@@ -120,7 +120,7 @@ int restar_binarios()
 		
 		return 0;
 	}
-/*
+
 int binarioADecimal(char *binario, unsigned int longitud)
 	{
 		int decimal = 0;
@@ -159,4 +159,3 @@ char * decimalABinario(int decimal, char *binario, unsigned int longitud)
 
 		return binario;
 	}
-*/
