@@ -16,14 +16,15 @@ char * PRE_CDECL decimalABinarioASM(int decimal, char *binario, unsigned int lon
 int binarioADecimal(char *binario, unsigned int longitud);
 char * decimalABinario(int decimal, char *binario, unsigned int longitud);
 
-int sumar_enteros();
-int restar_enteros();
-int sumar_binarios();
-int restar_binarios();
+int sumarDecimales(char *op1, char *op2);
+int restarDecimales(char *op1, char *op2);
+int sumarBinarios(char *op1, char *op2);
+int restarBinarios(char *op1, char *op2);
 
 void imprimirExplicacionComando();
 int esBinario(char * binario);
 int esDecimal(char * decimal);
+int esValidaLaEntrada( int argc, char *argv[] );
 
 #define ARGC (int)5
 /*
@@ -31,88 +32,79 @@ int esDecimal(char * decimal);
 	argv[1]: b/d
 	argv[2]: op1
 	argv[3]: +/-
-	argv[4]: op2
-*/
-
+	argv[4]: op2                   */
 int main( int argc, char *argv[] )
-	{
-		int opcion;
-
-		if (argc != 5){
-			printf("%d no es un número de argumentos inválido.\n", argc);
-			imprimirExplicacionComando();
-			return -1;
-		} else if( strcmp(argv[3],"+") && strcmp(argv[3],"-")){
-			printf("%s no es una operación válida\n", argv[3]);
-			imprimirExplicacionComando();
-			return -1;
-		} else if( strcmp(argv[1],"b") && strcmp(argv[1],"d")){
-			printf("%s no es una opción válida\n", argv[1]);
-			imprimirExplicacionComando();
-			return -1;
-		} else if (!strcmp(argv[1],"b")){							// Entrada binaria
-			if( esBinario(argv[2]) ){
-				printf ("%s no es un operando binario\n", argv[2]);
-				imprimirExplicacionComando();
-				return -1;	
-			} else if( esBinario(argv[4]) ){
-				printf ("%s no es un operando binario\n", argv[4]);
-				imprimirExplicacionComando();
-				return -1;	
-			} else if (strlen(argv[2]) > 32){
-				printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[2]);
-				imprimirExplicacionComando();
-				return -1;
-			} else if (strlen(argv[4]) > 32){
-				printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[4]);
-				imprimirExplicacionComando();
-				return -1;
-			}
-		}else if (!strcmp(argv[1],"d")){							// Entrada decimal
-			if( esDecimal(argv[2]) ){
-				printf ("%s no es un operando decimal\n", argv[2]);
-				imprimirExplicacionComando();	
-				return -1;
-			} else if( esDecimal(argv[4]) ){
-				printf ("%s no es un operando decimal\n", argv[4]);
-				imprimirExplicacionComando();
-				return -1;
-			} else if (strtoll(argv[2], '\0', 10) > 4294967295){
-				printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[2]);
-				imprimirExplicacionComando();
-				return -1;
-			} else if (strtoll(argv[4], '\0', 10) > 4294967295){
-				printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[4]);
-				imprimirExplicacionComando();
-				return -1;
-			}
-		}
-/*
-		while(1)
-		{
-			printf("\nOPCIONES: \n");
-			printf("\t1) Sumar 2 enteros \n");
-			printf("\t2) Restar 2 enteros \n");
-			printf("\t3) Sumar 2 binarios \n");
-			printf("\t4) Restar 2 binarios \n");
-			printf("\t5) Salir \n");
-			scanf("%d", &opcion);
-			
-			if(opcion == 1)
-				sumar_enteros();
-			else if (opcion == 2)
-				restar_enteros();
-			else if (opcion == 3)
-				sumar_binarios();
-			else if (opcion == 4)
-				restar_binarios();
-			else if (opcion == 5)
-				return 0;
-			else
-				printf("Opcion no valida\n");
-		}
-		*/
+{
+	if(esValidaLaEntrada(argc, argv)){
+		return -1;
+	}else if (!strcmp(argv[1],"b") && !strcmp(argv[3],"+")){
+		sumarBinarios(argv[2], argv[4]);
+		return 0;
+	}else if (!strcmp(argv[1],"b") && !strcmp(argv[3],"-")){
+		restarBinarios(argv[2], argv[4]);
+		return 0;
+	}else if (!strcmp(argv[1],"d") && !strcmp(argv[3],"+")){
+		sumarDecimales(argv[2], argv[4]);
+		return 0;
+	}else if (!strcmp(argv[1],"d") && !strcmp(argv[3],"-")){
+		restarDecimales(argv[2], argv[4]);
+		return 0;
 	}
+}
+
+int esValidaLaEntrada( int argc, char *argv[] )
+{
+	if (argc != 5){
+		printf("%d no es un número de argumentos inválido.\n", argc);
+		imprimirExplicacionComando();
+		return -1;
+	} else if( strcmp(argv[3],"+") && strcmp(argv[3],"-")){
+		printf("%s no es una operación válida\n", argv[3]);
+		imprimirExplicacionComando();
+		return -1;
+	} else if( strcmp(argv[1],"b") && strcmp(argv[1],"d")){
+		printf("%s no es una opción válida\n", argv[1]);
+		imprimirExplicacionComando();
+		return -1;
+	} else if (!strcmp(argv[1],"b")){							// Entrada binaria
+		if( esBinario(argv[2]) ){
+			printf ("%s no es un operando binario\n", argv[2]);
+			imprimirExplicacionComando();
+			return -1;	
+		} else if( esBinario(argv[4]) ){
+			printf ("%s no es un operando binario\n", argv[4]);
+			imprimirExplicacionComando();
+			return -1;	
+		} else if (strlen(argv[2]) > 32){
+			printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[2]);
+			imprimirExplicacionComando();
+			return -1;
+		} else if (strlen(argv[4]) > 32){
+			printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[4]);
+			imprimirExplicacionComando();
+			return -1;
+		}
+	}else if (!strcmp(argv[1],"d")){							// Entrada decimal
+		if( esDecimal(argv[2]) ){
+			printf ("%s no es un operando decimal\n", argv[2]);
+			imprimirExplicacionComando();	
+			return -1;
+		} else if( esDecimal(argv[4]) ){
+			printf ("%s no es un operando decimal\n", argv[4]);
+			imprimirExplicacionComando();
+			return -1;
+		} else if (strtoll(argv[2], '\0', 10) > 4294967295){
+			printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[2]);
+			imprimirExplicacionComando();
+			return -1;
+		} else if (strtoll(argv[4], '\0', 10) > 4294967295){
+			printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[4]);
+			imprimirExplicacionComando();
+			return -1;
+		}
+	}
+	return 0;
+}
 
 void imprimirExplicacionComando()
 {
@@ -140,75 +132,56 @@ int esDecimal(char * decimal)
 	return 0;
 }
 
-int sumar_enteros()
-	{
-		int n, m, result;
-		printf("Se sumaran los 2 numeros enteros introducidos: \n");
-		printf("Primer operando: ");
-		scanf("%d", &n);
-		printf("Segundo operando: ");
-		scanf("%d", &m);
+int sumarDecimales(char *op1, char *op2)
+{
+		unsigned int n, m, result;
+		
+		n = strtoll(op1, '\0', 10);
+		m = strtoll(op2, '\0', 10);
 		suma(n, m, &result);
-		printf("El resultado de la suma es %d\n", result);
+		printf("%d", result);
 		return 0;
-	}
+}
 
-int restar_enteros()
+int restarDecimales(char *op1, char *op2)
 	{
-		int n, m, result;
-		printf("Se restaran los 2 numeros enteros introducidos: \n");
-		printf("Primer operando: ");
-		scanf("%d", &n);
-		printf("Segundo operando: ");
-		scanf("%d", &m);
+		unsigned int n, m, result;
+		
+		n = strtoll(op1, '\0', 10);
+		m = strtoll(op2, '\0', 10);
 		resta(n, m, &result);
-		printf("El resultado de la resta es %d\n", result);
+		printf("%d", result);
 		return 0;
 	}
 
-int sumar_binarios()
+int sumarBinarios(char *op1, char *op2)
 	{
-		int n, m, result;
-		char entrada1[DOBLE_WORD+1];
-		char entrada2[DOBLE_WORD+1];
+		unsigned int n, m, result;
 		char salida[DOBLE_WORD+1];
-
-		printf("Se sumaran los 2 numeros binarios introducidos: \n");
-		printf("Primer operando: ");
-		scanf("%s", entrada1);
-		printf("Segundo operando: ");
-		scanf("%s", entrada2);
-		n = binarioADecimalASM(entrada1, strlen(entrada1));
-		m = binarioADecimalASM(entrada2, strlen(entrada2));
+		
+		n = binarioADecimalASM(op1, strlen(op1));
+		m = binarioADecimalASM(op2, strlen(op2));
 		suma(n, m, &result);
 
 		decimalABinarioASM(result, salida, DOBLE_WORD+1);
 
-		printf("El resultado de la suma es %s\n", salida);
+		printf("%s", salida);
 		return 0;
 	}
 
 
-int restar_binarios()
+int restarBinarios(char *op1, char *op2)
 	{
-		int n, m, result;
-		char entrada1[DOBLE_WORD+1];
-		char entrada2[DOBLE_WORD+1];
+		unsigned int n, m, result;
 		char salida[DOBLE_WORD+1];
 		
-		printf("Se restaran los 2 numeros binarios introducidos: \n");
-		printf("Primer operando: ");
-		scanf("%s", entrada1);
-		printf("Segundo operando: ");
-		scanf("%s", entrada2);
-		n = binarioADecimalASM(entrada1, strlen(entrada1));
-		m = binarioADecimalASM(entrada2, strlen(entrada2));
+		n = binarioADecimalASM(op1, strlen(op1));
+		m = binarioADecimalASM(op2, strlen(op2));
 		resta(n, m, &result);
 
 		decimalABinarioASM(result, salida, DOBLE_WORD+1);
 
-		printf("El resultado de la resta es %s\n", salida);
-		
+		printf("%s", salida);
 		return 0;
 	}
 /*
