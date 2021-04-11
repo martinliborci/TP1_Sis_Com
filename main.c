@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "cdecl.h"
 
@@ -19,10 +20,44 @@ int restar_enteros();
 int sumar_binarios();
 int restar_binarios();
 
-int main( void )
+void imprimirExplicacionComando();
+int esBinario(char * binario);
+int esDecimal(char * decimal);;
+
+#define ARGC (int)5
+/*
+	argv[0]: nombre del programa
+	argv[1]: b/d
+	argv[2]: op1
+	argv[3]: +/-
+	argv[4]: op2
+*/
+
+int main( int argc, char *argv[] )
 	{
 		int opcion;
 
+		if (argc != 5){
+			printf("%d no es un número de argumentos inválido.\n", argc);
+			imprimirExplicacionComando();
+		}
+
+		if( strcmp(argv[1],"b") && strcmp(argv[1],"d")){
+			printf("%s no es una opción válida\n", argv[1]);
+			imprimirExplicacionComando();
+		}
+
+		if( strcmp(argv[3],"+") && strcmp(argv[3],"-")){
+			printf("%s no es una operación válida\n", argv[3]);
+			imprimirExplicacionComando();
+		}
+
+		if( esDecimal(argv[2]) ){
+			printf ("%s no es un operando decimal\n", argv[2]);
+			imprimirExplicacionComando();	
+		}
+
+/*
 		while(1)
 		{
 			printf("\nOPCIONES: \n");
@@ -46,8 +81,36 @@ int main( void )
 			else
 				printf("Opcion no valida\n");
 		}
-		
+		*/
 	}
+
+void imprimirExplicacionComando()
+{
+	printf("Formato del comando: b/d op1 +/- op2\n");
+	printf("Donde:\n");
+	printf("\tb/d: indica si los operandos op1 y op2 se encuentran en binario (b) o en decimal (d)\n");
+	printf("\t+/-: indica la operación a realizar: suma (+) o resta (-)\n");
+}
+
+int esBinario(char * binario)
+{
+	for(char *pbin = binario; *pbin != '\0'; pbin++)
+		if(*pbin!='0' && *pbin!='1')
+			return 1;
+	return 0;
+}
+
+int esDecimal(char * decimal)
+{
+	for(char *pbin = decimal; *pbin != '\0'; pbin++){
+		printf(" %c ", *pbin);
+		if(!isdigit(*pbin)){
+			printf("%c no es un dígito", *pbin);
+			return 1;
+		}
+	}
+	return 0;
+}
 
 int sumar_enteros()
 	{
