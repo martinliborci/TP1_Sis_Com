@@ -5,15 +5,18 @@ LDFLAGS := -m32
 CC		:= gcc
 CXX		:= g++
 CXXFLAGS := -m32
-TARGETS := binarioADecimalASM decimalABinarioASM resta suma
-DEP := main.o
+#TARGETS := 
+#DEP := main.o
 
 .PHONY: clean
 
 %.o: %.asm
 	$(AS) $(ASFLAGS) $< 
 
-all: $(TARGETS) 
+%.o: %.c
+	$(CC) $(CFLAGS) $@ $^
+
+main:
 
 clean :
 	rm -f *.o $(TARGETS)
