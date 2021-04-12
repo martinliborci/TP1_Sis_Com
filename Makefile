@@ -10,4 +10,3 @@ ASM:
 	$(CC) -o tp1 -m32 main.c suma.o resta.o decimalABinarioASM.o binarioADecimalASM.o
 clean:
 	rm *.o 
-

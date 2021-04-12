@@ -139,7 +139,9 @@ int sumarDecimales(char *op1, char *op2)
 		m = strtoll(op2, '\0', 10);
 		suma(n, m, &result);
 		printf("%u", result);
+
 		printf("\n");
+
 		return 0;
 }
 
@@ -160,6 +162,7 @@ int sumarBinarios(char *op1, char *op2)
 		unsigned int n, m, result;
 		char salida[DOBLE_WORD+1];
 		
+
 		n = binarioADecimalASM(op1, strlen(op1));
 		m = binarioADecimalASM(op2, strlen(op2));
 		suma(n, m, &result);
