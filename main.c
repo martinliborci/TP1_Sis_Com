@@ -75,12 +75,12 @@ int esValidaLaEntrada( int argc, char *argv[] )
 			printf ("%s no es un operando binario\n", argv[4]);
 			imprimirExplicacionComando();
 			return -1;	
-		} else if (strlen(argv[2]) > 32){
-			printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[2]);
+		} else if (strlen(argv[2]) > 31){
+			printf ("La longitud del operando %s supera la máxima permitida de 31 dígitos binarios\n", argv[2]);
 			imprimirExplicacionComando();
 			return -1;
-		} else if (strlen(argv[4]) > 32){
-			printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[4]);
+		} else if (strlen(argv[4]) > 31){
+			printf ("La longitud del operando %s supera la máxima permitida de 31 dígitos binarios\n", argv[4]);
 			imprimirExplicacionComando();
 			return -1;
 		}
@@ -93,12 +93,12 @@ int esValidaLaEntrada( int argc, char *argv[] )
 			printf ("%s no es un operando decimal\n", argv[4]);
 			imprimirExplicacionComando();
 			return -1;
-		} else if (strtoll(argv[2], '\0', 10) > 4294967295){
-			printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[2]);
+		} else if (strtoll(argv[2], '\0', 10) > 2147483647){
+			printf ("El operando %s excede el valor máximo permito para ser representando en 31 bits (2.147.483.647)\n", argv[2]);
 			imprimirExplicacionComando();
 			return -1;
-		} else if (strtoll(argv[4], '\0', 10) > 4294967295){
-			printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[4]);
+		} else if (strtoll(argv[4], '\0', 10) > 2147483647){
+			printf ("El operando %s excede el valor máximo permito para ser representando en 31 bits (2.147.483.647)\n", argv[4]);
 			imprimirExplicacionComando();
 			return -1;
 		}
@@ -140,7 +140,7 @@ int sumarDecimales(char *op1, char *op2)
 		n = strtoll(op1, '\0', 10);
 		m = strtoll(op2, '\0', 10);
 		suma(n, m, &result);
-		printf("%d", result);
+		printf("%u", result);
 		return 0;
 }
 
