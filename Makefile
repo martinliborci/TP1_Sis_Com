@@ -1,22 +1,13 @@
-AS		:= nasm
-ASFLAGS := -f elf
-CFLAGS	:= -m32
-LDFLAGS := -m32
-CC		:= gcc
-CXX		:= g++
-CXXFLAGS := -m32
-#TARGETS := 
-#DEP := main.o
+CC=gcc
+CFLAGS=-I.
+NASM= nasm -f elf32
 
-.PHONY: clean
+ASM: 
+	$(NASM) suma.asm
+	$(NASM) resta.asm
+	$(NASM) binarioADecimalASM.asm
+	$(NASM) decimalABinarioASM.asm 
+	$(CC) -o tp1 -m32 main.c suma.o resta.o decimalABinarioASM.o binarioADecimalASM.o
+clean:
+	rm *.o 
 
-%.o: %.asm
-	$(AS) $(ASFLAGS) $< 
-
-%.o: %.c
-	$(CC) $(CFLAGS) $@ $^
-
-main:
-
-clean :
-	rm -f *.o $(TARGETS)
