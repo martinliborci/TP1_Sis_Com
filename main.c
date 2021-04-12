@@ -75,16 +75,16 @@ int esValidaLaEntrada( int argc, char *argv[] )
 			printf ("%s no es un operando binario\n", argv[4]);
 			imprimirExplicacionComando();
 			return -1;	
-		} else if (strlen(argv[2]) > 32){
-			printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[2]);
+		} else if (strlen(argv[2]) > 31){
+			printf ("La longitud del operando %s supera la máxima permitida de 31 dígitos binarios\n", argv[2]);
 			imprimirExplicacionComando();
 			return -1;
-		} else if (strlen(argv[4]) > 32){
-			printf ("La longitud del operando %s supera la máxima permitida de 32 dígitos binarios\n", argv[4]);
+		} else if (strlen(argv[4]) > 31){
+			printf ("La longitud del operando %s supera la máxima permitida de 31 dígitos binarios\n", argv[4]);
 			imprimirExplicacionComando();
 			return -1;
 		}
-	}else if (!strcmp(argv[1],"d")){							// Entrada decimal
+	} else if (!strcmp(argv[1],"d")){							// Entrada decimal
 		if( esDecimal(argv[2]) ){
 			printf ("%s no es un operando decimal\n", argv[2]);
 			imprimirExplicacionComando();	
@@ -93,12 +93,12 @@ int esValidaLaEntrada( int argc, char *argv[] )
 			printf ("%s no es un operando decimal\n", argv[4]);
 			imprimirExplicacionComando();
 			return -1;
-		} else if (strtoll(argv[2], '\0', 10) > 4294967295){
-			printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[2]);
+		} else if (strtoll(argv[2], '\0', 10) > 2147483647){
+			printf ("El operando %s excede el valor máximo permito para ser representando en 31 bits (2.147.483.647)\n", argv[2]);
 			imprimirExplicacionComando();
 			return -1;
-		} else if (strtoll(argv[4], '\0', 10) > 4294967295){
-			printf ("El operando %s excede el valor máximo permito para ser representando en 32 bits (4.294.967.295)\n", argv[4]);
+		} else if (strtoll(argv[4], '\0', 10) > 2147483647){
+			printf ("El operando %s excede el valor máximo permito para ser representando en 31 bits (2.147.483.647)\n", argv[4]);
 			imprimirExplicacionComando();
 			return -1;
 		}
@@ -135,11 +135,11 @@ int esDecimal(char * decimal)
 int sumarDecimales(char *op1, char *op2)
 {
 		unsigned int n, m, result;
-		
 		n = strtoll(op1, '\0', 10);
 		m = strtoll(op2, '\0', 10);
 		suma(n, m, &result);
-		printf("%d", result);
+		printf("%u", result);
+		printf("\n");
 		return 0;
 }
 
@@ -151,6 +151,7 @@ int restarDecimales(char *op1, char *op2)
 		m = strtoll(op2, '\0', 10);
 		resta(n, m, &result);
 		printf("%d", result);
+		printf("\n");	
 		return 0;
 	}
 
@@ -166,15 +167,15 @@ int sumarBinarios(char *op1, char *op2)
 		decimalABinarioASM(result, salida, DOBLE_WORD+1);
 
 		printf("%s", salida);
+		printf("\n");
 		return 0;
 	}
-
 
 int restarBinarios(char *op1, char *op2)
 	{
 		unsigned int n, m, result;
 		char salida[DOBLE_WORD+1];
-		
+
 		n = binarioADecimalASM(op1, strlen(op1));
 		m = binarioADecimalASM(op2, strlen(op2));
 		resta(n, m, &result);
@@ -182,9 +183,10 @@ int restarBinarios(char *op1, char *op2)
 		decimalABinarioASM(result, salida, DOBLE_WORD+1);
 
 		printf("%s", salida);
+		printf("\n");
 		return 0;
 	}
-/*
+
 int binarioADecimal(char *binario, unsigned int longitud)
 	{
 		int decimal = 0;
@@ -195,7 +197,6 @@ int binarioADecimal(char *binario, unsigned int longitud)
 
 		return decimal;
 	}
-
 
 char * decimalABinario(int decimal, char *binario, unsigned int longitud)
 	{
@@ -223,4 +224,3 @@ char * decimalABinario(int decimal, char *binario, unsigned int longitud)
 
 		return binario;
 	}
-*/
