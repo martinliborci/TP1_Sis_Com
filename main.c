@@ -84,7 +84,7 @@ int esValidaLaEntrada( int argc, char *argv[] )
 			imprimirExplicacionComando();
 			return -1;
 		}
-	}else if (!strcmp(argv[1],"d")){							// Entrada decimal
+	} else if (!strcmp(argv[1],"d")){							// Entrada decimal
 		if( esDecimal(argv[2]) ){
 			printf ("%s no es un operando decimal\n", argv[2]);
 			imprimirExplicacionComando();	
@@ -136,6 +136,7 @@ int sumarDecimales(char *op1, char *op2)
 {
 		unsigned int n, m, result;
 		
+		printf("\n");
 		n = strtoll(op1, '\0', 10);
 		m = strtoll(op2, '\0', 10);
 		suma(n, m, &result);
@@ -147,6 +148,7 @@ int restarDecimales(char *op1, char *op2)
 	{
 		unsigned int n, m, result;
 		
+		printf("\n");
 		n = strtoll(op1, '\0', 10);
 		m = strtoll(op2, '\0', 10);
 		resta(n, m, &result);
@@ -159,6 +161,7 @@ int sumarBinarios(char *op1, char *op2)
 		unsigned int n, m, result;
 		char salida[DOBLE_WORD+1];
 		
+		printf("\n");
 		n = binarioADecimalASM(op1, strlen(op1));
 		m = binarioADecimalASM(op2, strlen(op2));
 		suma(n, m, &result);
@@ -169,12 +172,12 @@ int sumarBinarios(char *op1, char *op2)
 		return 0;
 	}
 
-
 int restarBinarios(char *op1, char *op2)
 	{
 		unsigned int n, m, result;
 		char salida[DOBLE_WORD+1];
 		
+		printf("\n");
 		n = binarioADecimalASM(op1, strlen(op1));
 		m = binarioADecimalASM(op2, strlen(op2));
 		resta(n, m, &result);
@@ -184,7 +187,7 @@ int restarBinarios(char *op1, char *op2)
 		printf("%s", salida);
 		return 0;
 	}
-/*
+
 int binarioADecimal(char *binario, unsigned int longitud)
 	{
 		int decimal = 0;
@@ -195,7 +198,6 @@ int binarioADecimal(char *binario, unsigned int longitud)
 
 		return decimal;
 	}
-
 
 char * decimalABinario(int decimal, char *binario, unsigned int longitud)
 	{
@@ -223,4 +225,3 @@ char * decimalABinario(int decimal, char *binario, unsigned int longitud)
 
 		return binario;
 	}
-*/
