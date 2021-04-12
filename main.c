@@ -176,7 +176,7 @@ int restarBinarios(char *op1, char *op2)
 	{
 		unsigned int n, m, result;
 		char salida[DOBLE_WORD+1];
-		
+
 		printf("\n");
 		n = binarioADecimalASM(op1, strlen(op1));
 		m = binarioADecimalASM(op2, strlen(op2));
