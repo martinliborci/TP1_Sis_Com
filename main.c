@@ -6,8 +6,8 @@
 #include "cdecl.h"
 
 // CDECL: utilizar convención de llamadas estándar (código llamador quita los parámetros de la pila)
-void PRE_CDECL resta( int, int, int * ) POST_CDECL;
-void PRE_CDECL suma( int, int, int * ) POST_CDECL;
+int PRE_CDECL resta( int, int) POST_CDECL;
+int PRE_CDECL suma( int, int) POST_CDECL;
 int PRE_CDECL binarioADecimalASM(char *binario, unsigned int longitud) POST_CDECL;
 char * PRE_CDECL decimalABinarioASM(int decimal, char *binario, unsigned int longitud) POST_CDECL;
 	
@@ -111,8 +111,8 @@ void imprimirExplicacionComando()
 	printf("Formato del comando: b/d op1 +/- op2\n");
 	printf("Donde:\n");
 	printf("\tb/d: indica si los operandos op1 y op2 se encuentran en binario (b) o en decimal (d)\n");
-	printf("\t     La longitud máxima permitida de los operandos binarios es de 32 dígitos\n");
-	printf("\t     El valor máximo permitido de los operandos decimales es 4.294.967.295\n");
+	printf("\t     La longitud máxima permitida de los operandos binarios es de 31 dígitos\n");
+	printf("\t     El valor máximo permitido de los operandos decimales es 2.147.483.647\n");
 	printf("\t+/-: indica la operación a realizar: suma (+) o resta (-)\n");
 }
 
@@ -137,7 +137,7 @@ int sumarDecimales(char *op1, char *op2)
 		unsigned int n, m, result;
 		n = strtoll(op1, '\0', 10);
 		m = strtoll(op2, '\0', 10);
-		suma(n, m, &result);
+		result = suma(n, m);
 		printf("%u", result);
 
 		printf("\n");
@@ -149,9 +149,9 @@ int restarDecimales(char *op1, char *op2)
 	{
 		unsigned int n, m, result;
 		
-		n = strtoll(op1, '\0', 10);
-		m = strtoll(op2, '\0', 10);
-		resta(n, m, &result);
+		n = strtol(op1, '\0', 10);
+		m = strtol(op2, '\0', 10);
+		result = resta(n, m);
 		printf("%d", result);
 		printf("\n");	
 		return 0;
@@ -162,13 +162,14 @@ int sumarBinarios(char *op1, char *op2)
 		unsigned int n, m, result;
 		char salida[DOBLE_WORD+1];
 		
-
-		n = binarioADecimalASM(op1, strlen(op1));
-		m = binarioADecimalASM(op2, strlen(op2));
-		suma(n, m, &result);
+		//n = binarioADecimalASM(op1, strlen(op1));
+		//m = binarioADecimalASM(op2, strlen(op2));	
+		n = strtol(op1, '\0', 2);
+		m = strtol(op2, '\0', 2);
+		
+		result = suma(n, m);
 
 		decimalABinarioASM(result, salida, DOBLE_WORD+1);
-
 		printf("%s", salida);
 		printf("\n");
 		return 0;
@@ -176,15 +177,17 @@ int sumarBinarios(char *op1, char *op2)
 
 int restarBinarios(char *op1, char *op2)
 	{
-		unsigned int n, m, result;
+		int n, m, result;
 		char salida[DOBLE_WORD+1];
 
-		n = binarioADecimalASM(op1, strlen(op1));
-		m = binarioADecimalASM(op2, strlen(op2));
-		resta(n, m, &result);
-
+		//n = binarioADecimalASM(op1, strlen(op1));
+		//m = binarioADecimalASM(op2, strlen(op2));
+		n = strtol(op1, '\0', 2);
+		m = strtol(op2, '\0', 2);
+		
+		result = resta(n, m);
+		
 		decimalABinarioASM(result, salida, DOBLE_WORD+1);
-
 		printf("%s", salida);
 		printf("\n");
 		return 0;
