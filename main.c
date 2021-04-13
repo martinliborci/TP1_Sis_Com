@@ -8,13 +8,9 @@
 // CDECL: utilizar convención de llamadas estándar (código llamador quita los parámetros de la pila)
 int PRE_CDECL resta( int, int) POST_CDECL;
 int PRE_CDECL suma( int, int) POST_CDECL;
-int PRE_CDECL binarioADecimalASM(char *binario, unsigned int longitud) POST_CDECL;
 char * PRE_CDECL decimalABinarioASM(int decimal, char *binario, unsigned int longitud) POST_CDECL;
 	
 #define DOBLE_WORD 32
-
-int binarioADecimal(char *binario, unsigned int longitud);
-char * decimalABinario(int decimal, char *binario, unsigned int longitud);
 
 int sumarDecimales(char *op1, char *op2);
 int restarDecimales(char *op1, char *op2);
@@ -26,7 +22,6 @@ int esBinario(char * binario);
 int esDecimal(char * decimal);
 int esValidaLaEntrada( int argc, char *argv[] );
 
-#define ARGC (int)5
 /*
 	argv[0]: nombre del programa
 	argv[1]: b/d
@@ -52,9 +47,10 @@ int main( int argc, char *argv[] )
 	}
 }
 
+// Valida que la entrada sea correcta. Retorna 0 si lo es y -1 si es inválida
 int esValidaLaEntrada( int argc, char *argv[] )
 {
-	if (argc != 5){
+	if (argc != 5){			
 		printf("%d no es un número de argumentos inválido.\n", argc);
 		imprimirExplicacionComando();
 		return -1;
@@ -106,6 +102,7 @@ int esValidaLaEntrada( int argc, char *argv[] )
 	return 0;
 }
 
+// Imprime la explicación de lo que hace el programa
 void imprimirExplicacionComando()
 {
 	printf("Formato del comando: b/d op1 +/- op2\n");
@@ -116,6 +113,7 @@ void imprimirExplicacionComando()
 	printf("\t+/-: indica la operación a realizar: suma (+) o resta (-)\n");
 }
 
+// Comprueba que el string sea una representación binaria. Si lo es devulve 0. En caso contrario: 1
 int esBinario(char * binario)
 {
 	for(char *pbin = binario; *pbin != '\0'; pbin++)
@@ -124,6 +122,7 @@ int esBinario(char * binario)
 	return 0;
 }
 
+// Comprueba que el string sea una representación decimal. Si lo es devulve 0. En caso contrario: 1
 int esDecimal(char * decimal)
 {
 	for(char *pbin = decimal; *pbin != '\0'; pbin++)
@@ -132,11 +131,12 @@ int esDecimal(char * decimal)
 	return 0;
 }
 
+// Suma 2 decimales en cadenas de texto. Imprime el resultado en pantalla y retorna 0 si ha salido todo bien
 int sumarDecimales(char *op1, char *op2)
 {
 		unsigned int n, m, result;
-		n = strtoll(op1, '\0', 10);
-		m = strtoll(op2, '\0', 10);
+		n = strtol(op1, '\0', 10); // convertir el 1er operando de string a entero
+		m = strtol(op2, '\0', 10); // convertir el 2do operando de string a entero
 		result = suma(n, m);
 		printf("%u", result);
 
@@ -145,88 +145,49 @@ int sumarDecimales(char *op1, char *op2)
 		return 0;
 }
 
+// Resta 2 decimales en cadenas de texto. Imprime el resultado en pantalla y retorna 0 si ha salido todo bien
 int restarDecimales(char *op1, char *op2)
 	{
 		unsigned int n, m, result;
 		
-		n = strtol(op1, '\0', 10);
-		m = strtol(op2, '\0', 10);
+		n = strtol(op1, '\0', 10); // convertir el 1er operando de string a entero
+		m = strtol(op2, '\0', 10); // convertir el 2do operando de string a entero
 		result = resta(n, m);
 		printf("%d", result);
 		printf("\n");	
 		return 0;
 	}
 
+// Suma 2 binarios en cadenas de texto. Imprime el resultado en pantalla y retorna 0 si ha salido todo bien
 int sumarBinarios(char *op1, char *op2)
 	{
 		unsigned int n, m, result;
 		char salida[DOBLE_WORD+1];
 		
-		//n = binarioADecimalASM(op1, strlen(op1));
-		//m = binarioADecimalASM(op2, strlen(op2));	
-		n = strtol(op1, '\0', 2);
-		m = strtol(op2, '\0', 2);
+		n = strtol(op1, '\0', 2); // convertir el 1er operando de string a entero
+		m = strtol(op2, '\0', 2); // convertir el 2do operando de string a entero
 		
 		result = suma(n, m);
 
-		decimalABinarioASM(result, salida, DOBLE_WORD+1);
+		decimalABinarioASM(result, salida, DOBLE_WORD+1); // convertir el resultado a string
 		printf("%s", salida);
 		printf("\n");
 		return 0;
 	}
 
+// Resta 2 binarios en cadenas de texto. Imprime el resultado en pantalla y retorna 0 si ha salido todo bien
 int restarBinarios(char *op1, char *op2)
 	{
 		int n, m, result;
 		char salida[DOBLE_WORD+1];
 
-		//n = binarioADecimalASM(op1, strlen(op1));
-		//m = binarioADecimalASM(op2, strlen(op2));
-		n = strtol(op1, '\0', 2);
-		m = strtol(op2, '\0', 2);
+		n = strtol(op1, '\0', 2); // convertir el 1er operando de string a entero
+		m = strtol(op2, '\0', 2); // convertir el 2do operando de string a entero
 		
 		result = resta(n, m);
 		
-		decimalABinarioASM(result, salida, DOBLE_WORD+1);
+		decimalABinarioASM(result, salida, DOBLE_WORD+1); // convertir el resultado a string
 		printf("%s", salida);
 		printf("\n");
 		return 0;
-	}
-
-int binarioADecimal(char *binario, unsigned int longitud)
-	{
-		int decimal = 0;
-		int i;
-		for (i=0; i < longitud; i++)
-			if(binario[longitud-1-i] == '1')
-				decimal |= 1 << i;
-
-		return decimal;
-	}
-
-char * decimalABinario(int decimal, char *binario, unsigned int longitud)
-	{
-		unsigned int i;
-		char *pbinario;
-
-		// Si es 0
-		if(!decimal){
-			binario[0] = '0';
-			binario[1] = '\0';
-			return binario;
-		}
-
-		// Saltar los 0s hasta encontrar el 1er 1
-		for(i=0x8000; !(decimal & i); i >>= 1)
-				;
-
-		// 
-		for(pbinario = binario  ; i > 0 ;  i >>= 1, pbinario++)
-			if(decimal & i)
-				*pbinario = '1';
-			else
-				*pbinario = '0';
-		*pbinario = '\0';
-
-		return binario;
 	}
