@@ -1,4 +1,4 @@
-; har * decimalABinarioASM(int decimal, char *binario, unsigned int longitud)
+; char * decimalABinarioASM(int decimal, char *binario, unsigned int longitud)
 ; convierte una cadena de caracteres de 1 y 0 a una variable entera
 ; Parametros:
 ;   decimal  - Entero que representa el valor en decimal del string 
